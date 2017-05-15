@@ -48,6 +48,53 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.4.5</version>
+                <configuration>
+
+                    <!--
+                        NOTE: These Environment Variables Need to be set for Docker Toolbox on your machine
+                        DOCKER_CERT_PATH=/Users/adrianmilne/.docker/machine/machines/default
+                        DOCKER_HOST=https://192.168.99.100:2376
+                     -->
+
+                    <imageName>${docker.image.prefix}/${project.artifactId}</imageName>
+                    <dockerDirectory>src/main/docker</dockerDirectory>
+
+
+                    <resources>
+                        <resource>
+                            <targetPath>/</targetPath>
+                            <directory>${project.build.directory}</directory>
+                        </resource>
+                    </resources>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.5</version>
+                <executions>
+                    <execution>
+                        <id>make-zip</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>
+                                single
+                            </goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <appendAssemblyId>false</appendAssemblyId>
+                    <descriptors>
+                        <descriptor>src/main/docker/assembly.xml</descriptor>
+                    </descriptors>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
