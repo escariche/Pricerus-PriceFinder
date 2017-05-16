@@ -17,11 +17,11 @@ public class SEController {
                             @RequestParam String url) {
         String test = getName();
         String price = getPrice(url);
-        return new Product(id, test, url, price);
+        return new Product(id, price, test, url);
     }
 
     private String getName(){
-        return "La puta de tu madre";
+        return "Test Product from Carrefour";
     }
 
     private String getPrice(String url){

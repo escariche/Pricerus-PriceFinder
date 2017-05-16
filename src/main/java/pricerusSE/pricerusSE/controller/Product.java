@@ -13,7 +13,7 @@ public class Product {
     private final String url;
     private final String price;
 
-    public Product(long id, String name, String url, String price) {
+    public Product(long id, String price, String name, String url) {
         this.id = id;
         this.name = name;
         this.url = url;
