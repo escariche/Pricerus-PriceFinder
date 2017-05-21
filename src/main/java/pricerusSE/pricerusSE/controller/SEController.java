@@ -15,13 +15,15 @@ public class SEController {
     @RequestMapping("/getPrice/")
     public Product getPrice(@RequestParam long id,
                             @RequestParam String url) {
-        String test = getName();
+        String name = getName();
+        String retailer = getRetailer(url);
         String price = getPrice(url);
-        return new Product(id, price, test, url);
+        Product p = new Product(id, price, name, retailer, url);
+        return p;
     }
 
     private String getName(){
-        return "Test Product from Carrefour";
+        return "NAME";
     }
 
     private String getPrice(String url){
@@ -81,7 +83,12 @@ public class SEController {
         } catch (Exception e) {
             System.out.println("There was an error: " + e.getMessage());
         }
-        System.out.println("PRICEOUT!!!!!!!!!!!!!!!!!!!!" + priceOut);
         return priceOut;
+    }
+
+
+    public String getRetailer(String url) {
+        int start = url.indexOf("www.") + 4;
+        return url.substring(start, url.indexOf(".", start + 1));
     }
 }

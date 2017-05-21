@@ -9,15 +9,17 @@ public class Product {
         * price: got from url
         * */
     private final long id;
-    private final String name;
-    private final String url;
     private final String price;
+    private final String name;
+    private final String retailer;
+    private final String url;
 
-    public Product(long id, String price, String name, String url) {
+    public Product(long id, String price, String name, String retailer, String url) {
         this.id = id;
-        this.name = name;
-        this.url = url;
         this.price = price;
+        this.name = name;
+        this.retailer = retailer;
+        this.url = url;
     }
 
     public long getId() {
@@ -29,4 +31,7 @@ public class Product {
     public String getUrl(){return url;}
 
     public String getPrice(){ return price;}
+
+    public String getRetailer(){return retailer;}
+
 }
