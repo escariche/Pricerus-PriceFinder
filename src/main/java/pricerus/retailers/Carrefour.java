@@ -38,8 +38,8 @@ public class Carrefour implements Retailer {
         Elements form = docIn.select("form#addToCart");
         Elements divs = form.select("div");//.select("div.col-xs-12 margin_top15 no-padding");
         Elements span = divs.select("span");
-        System.out.println("Precio Carrefour: " + span.first().text());
-        priceOut = span.first().text();
+        //System.out.println("Precio Carrefour: " + span.first().text().replaceAll("€",""));
+        priceOut = span.first().text().replaceAll("€","");
 
 
 
