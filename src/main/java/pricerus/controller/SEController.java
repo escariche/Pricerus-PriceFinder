@@ -31,8 +31,9 @@ public class SEController {
     }
 
     public String getRetailer(String url){
-        int start = url.indexOf("www.")+4;
-        return url.substring(start,url.indexOf(".",start+1));
+        int start = url.indexOf(".");
+        //System.out.println(url.substring(start+1,url.indexOf(".",start+1)));
+        return url.substring(start+1,url.indexOf(".",start+1));
     }
 
     public void addPrice(int id,String price, String url){

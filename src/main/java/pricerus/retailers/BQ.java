@@ -1,6 +1,7 @@
 package pricerus.retailers;
 
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Attribute;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -33,23 +34,39 @@ public class BQ implements Retailer {
 
         String priceOut=null;
         Document docIn=this.getBody();
-        Elements priceBox = docIn.select("p.price_box");
-        Elements spans = priceBox.select("span.price_qty");
-        //System.out.println(spans.text());
-        System.out.println("1");
 
 
-        HashMap<String, String> hmap = new HashMap<String, String>();
-        Elements grid = docIn.select("li.item_grid");
-        for (Element gr : grid) {
-            Elements name = gr.select("p.name");
-            Elements price = gr.select("span.price_qty");
-            hmap.put(name.text(), price.text());
-            System.out.println(name.text() + " : " + hmap.get(name.text()));
-            priceOut = hmap.get(name.text());
+        Elements headersOne = docIn.select("h1");
+        Elements spans = docIn.select("span");
+        Elements labels = docIn.select("label.inline_element");
+        String bqName = "notfound";
+
+        for (Element h: headersOne){
+            for (Attribute a: h.attributes()){
+                if(a.getValue().contains("name")){
+                    //System.out.println(h.text());
+                    //System.out.println(a.getKey().toString());
+                    //System.out.println(a.getValue().toString());
+                    bqName = h.text();
+                }
+            }
+        }
+        //System.out.println("BQ PRODUCT: " + bqName);
+
+        for(Element l : labels){
+
+            if(l.text().contains(bqName)){
+                spans = l.select("span.price");
+                //System.out.println("-----------LABEL found: " + l.text());
+            }
         }
 
+        for(Element e : spans){
 
+            priceOut = e.text().substring(0, e.text().length()-2).replace(",",".").trim();
+        }
+
+        //System.out.println(priceOut);
         return priceOut;
     }
 
