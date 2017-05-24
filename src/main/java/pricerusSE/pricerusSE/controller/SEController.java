@@ -1,13 +1,12 @@
 package pricerusSE.pricerusSE.controller;
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Attribute;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.HashMap;
 
 @RestController
 public class SEController {
@@ -42,22 +41,36 @@ public class SEController {
 
             System.out.println("0");
             //Web BQ
-            Elements priceBox = docIn.select("p.price_box");
-            Elements spans = priceBox.select("span.price_qty");
-            //System.out.println(spans.text());
-            System.out.println("1");
+            Elements headersOne = docIn.select("h1");
+            Elements spans = docIn.select("span");
+            Elements labels = docIn.select("label.inline_element");
+            String bqName = "notfound";
 
-
-            HashMap<String, String> hmap = new HashMap<String, String>();
-            Elements grid = docIn.select("li.item_grid");
-            for (Element gr : grid) {
-                Elements name = gr.select("p.name");
-                Elements price = gr.select("span.price_qty");
-                hmap.put(name.text(), price.text());
-                System.out.println(name.text() + " : " + hmap.get(name.text()));
-                priceOut = hmap.get(name.text());
+            for (Element h: headersOne){
+                for (Attribute a: h.attributes()){
+                    if(a.getValue().contains("name")){
+                        //System.out.println(h.text());
+                        //System.out.println(a.getKey().toString());
+                        //System.out.println(a.getValue().toString());
+                        bqName = h.text();
+                    }
+                }
             }
-            System.out.println("2");
+            //System.out.println("BQ PRODUCT: " + bqName);
+
+            for(Element l : labels){
+                System.out.println(l);
+                System.out.println(l.text());
+                if(l.text().contains(bqName)){
+                    spans = l.select("span.price");
+                    //System.out.println("-----------LABEL found: " + l.text());
+                }
+            }
+
+            for(Element e : spans){
+                System.out.println("-----------PRICE found: " + e.text());
+                priceOut = e.text().substring(0, e.text().length()-1);
+            }
 
             //Web CARREFOUR
             Elements products = docIn.select("div.texto-producto");
@@ -65,6 +78,7 @@ public class SEController {
             Elements divs = form.select("div");
             Elements span = divs.select("span");
             for (Element s : span){
+                String sClassName = s.className();
                 if(s.className().contains("new-price")){
                     System.out.println(s);
                     priceOut = s.text().substring(0, s.text().length()-1);
@@ -72,19 +86,6 @@ public class SEController {
             }
             //priceOut = span.last().text();
 
-
-            // Elements priceAlone = divs.select("span.col-xs-12 rojo01 new-price");
-            // System.out.println(priceAlone.text());
-
-            for (Element p : products) {
-                Elements name = p.select("h2.titular-producto");
-                Elements price = p.select("p.precio-nuevo");
-                hmap.put(name.text(), price.text());
-                System.out.println(name.text() + " : " + hmap.get(name.text()));
-                priceOut = hmap.get(name.text());
-            }
-
-            System.out.println(hmap.size() + " RESULTS FOUND");
         } catch (Exception e) {
             System.out.println("There was an error: " + e.getMessage());
         }
