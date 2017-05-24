@@ -1,12 +1,34 @@
 package pricerus.retailers;
 
-/**
- * Created by Abel on 21/05/2017.
- */
-public interface Retailer {
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
-    public String getPrice();
-    public String getHTML();
+import java.io.IOException;
 
+public class Retailer {
+
+    private String url;
+    private Document body;
+
+    public Retailer(String url) throws IOException {
+        this.url=url;
+        Document body = (Document) Jsoup.connect(url).get();
+        this.body=body;
+    }
+
+    public String getPrice(){
+        return null;
+    }
+
+    public String getHTML() {
+        return this.getBody().toString();
+    }
+    public String getUrl() {
+        return url;
+    }
+
+    public Document getBody() {
+        return body;
+    }
 
 }

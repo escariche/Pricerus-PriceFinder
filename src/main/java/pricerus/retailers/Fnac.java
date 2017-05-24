@@ -9,23 +9,10 @@ import java.io.IOException;
 import java.util.HashMap;
 
 
-public class Fnac implements Retailer {
-
-    private String url;
-    private Document body;
+public class Fnac extends Retailer {
 
     public Fnac(String url) throws IOException {
-        this.url=url;
-        Document body = (Document) Jsoup.connect(url).get();
-        this.body=body;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public Document getBody() {
-        return body;
+        super(url);
     }
 
     @Override
@@ -38,10 +25,5 @@ public class Fnac implements Retailer {
         priceOut=product.text().substring(0, product.text().length()-1).replace(",",".").trim();
 
         return priceOut;
-    }
-
-    @Override
-    public String getHTML() {
-        return this.getBody().toString();
     }
 }

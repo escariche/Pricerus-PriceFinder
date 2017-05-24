@@ -9,23 +9,10 @@ import java.io.IOException;
 import java.util.HashMap;
 
 
-public class MediaMarkt implements Retailer {
-
-    private String url;
-    private Document body;
+public class MediaMarkt extends Retailer {
 
     public MediaMarkt(String url) throws IOException {
-        this.url=url;
-        Document body = (Document) Jsoup.connect(url).get();
-        this.body=body;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public Document getBody() {
-        return body;
+        super(url);
     }
 
     @Override
@@ -39,10 +26,5 @@ public class MediaMarkt implements Retailer {
         priceOut=priceOut.replace(" ","");
 
         return priceOut;
-    }
-
-    @Override
-    public String getHTML() {
-        return this.getBody().toString();
     }
 }
