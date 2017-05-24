@@ -3,9 +3,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
 import pricerus.model.Product;
-import pricerus.retailers.BQ;
-import pricerus.retailers.Carrefour;
-import pricerus.retailers.Fnac;
+import pricerus.retailers.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -90,6 +88,26 @@ public class SEController {
                     e.printStackTrace();
                 }
                 price=fnac.getPrice();
+                break;
+
+            case "pccomponentes":
+                PCComponentes pccomponentes= null;
+                try {
+                    pccomponentes = new PCComponentes(url);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                price=pccomponentes.getPrice();
+                break;
+
+            case "mediamarkt":
+                MediaMarkt mediamarkt= null;
+                try {
+                    mediamarkt = new MediaMarkt(url);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                price=mediamarkt.getPrice();
                 break;
 
 
