@@ -8,9 +8,7 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.util.HashMap;
 
-/**
- * Created by Abel on 21/05/2017.
- */
+
 public class Carrefour implements Retailer {
 
     private String url;

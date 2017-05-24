@@ -22,8 +22,7 @@ public class SEController {
         String name=product.getName();
         List<String> urls=product.getUrls();
         String price="0.0";
-
-
+        
         for (String url:urls){
             price = String.valueOf(Double.parseDouble(getPrice(url, getRetailer(url))));
             addPrice(id,price,url);
