@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import pricerus.model.Product;
 import pricerus.retailers.BQ;
 import pricerus.retailers.Carrefour;
+import pricerus.retailers.Fnac;
 
 import java.io.IOException;
 import java.util.List;
@@ -79,6 +80,16 @@ public class SEController {
                     e.printStackTrace();
                 }
                     price=carrefour.getPrice();
+                break;
+
+            case "fnac":
+                Fnac fnac= null;
+                try {
+                    fnac = new Fnac(url);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                price=fnac.getPrice();
                 break;
 
 
