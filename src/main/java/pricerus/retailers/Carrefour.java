@@ -31,9 +31,6 @@ public class Carrefour extends Retailer {
             }
         }
 
-
-
-
         return priceOut;
     }
 }

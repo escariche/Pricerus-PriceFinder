@@ -3,6 +3,7 @@ package pricerus.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
+import pricerus.mail.MailClient;
 import pricerus.model.Product;
 import pricerus.retailers.*;
 
@@ -15,17 +16,41 @@ public class SEController {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
+    @Autowired
+    MailClient mailClient;
+
     @RequestMapping(method = RequestMethod.POST, value = "/getPrice")
     public void checkPrice(@RequestBody Product product) {
 
         int id = product.getId();
         String name = product.getName();
+        Double maxPrice=product.getMaxPrice();
+        Double minPrice=product.getMinPrice();
         List<String> urls = product.getUrls();
-        String price = "0.0";
+        String mail = product.getEmail();
+
+        Double price = 0.0;
+
+
 
         for (String url : urls) {
-            price = String.valueOf(Double.parseDouble(getPrice(url, getRetailer(url))));
-            addPrice(id, price, url);
+            price = Double.parseDouble(getPrice(url, getRetailer(url)));
+            addPrice(id, String.valueOf(price), url);
+
+            System.out.println(price);
+            System.out.println(maxPrice);
+            System.out.println(minPrice);
+
+
+            if (price>maxPrice || price<minPrice){
+
+                String message="Alerta, se ha encontrado que el precio del producto: \""+name+"\" en la web: "+url+" no está dentro de los límites establecidos";
+
+                mailClient.prepareAndSend(mail,message,"Información de Pricerus");
+
+
+            }
+
         }
 
     }
